@@ -8,7 +8,7 @@ export const SplashBackground: React.FC = () => {
       <div 
         className="absolute inset-0 w-full h-full"
         style={{
-          background: 'radial-gradient(circle at 50% 45%, rgba(226, 192, 120, 0.08) 0%, rgba(20, 14, 8, 0.5) 45%, #000000 75%)'
+          background: 'radial-gradient(circle at 50% 45%, rgba(226, 192, 120, 0.08) 0%, rgba(20, 14, 8, 0.4) 45%, #000000 75%)'
         }}
       />
 
@@ -29,9 +29,6 @@ export const SplashBackground: React.FC = () => {
           background: 'radial-gradient(circle, rgba(212, 175, 55, 0.18) 0%, rgba(184, 134, 11, 0.08) 50%, transparent 70%)'
         }}
       />
-
-      {/* 3. Subtle Luxury Vignette */}
-      <div className="absolute inset-0 bg-radial-gradient pointer-events-none" />
     </div>
   );
 };
