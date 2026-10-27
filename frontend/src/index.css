@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-gold: #d5a542;
+    --color-gold-dark: #b88636;
+    --color-bbs-rose: #dc9d84;
+    --color-bbs-dark: #3e2417;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #fcf8f6;
+    color: #2c1e18;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .font-serif {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  .font-script {
+    font-family: 'Alex Brush', cursive, sans-serif;
+  }
+}
+
+/* Custom Luxury Gradients & Glassmorphism */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #be882e 0%, #dfbc6a 50%, #936622 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.rose-gradient-text {
+  background: linear-gradient(135deg, #994732 0%, #dc9d84 60%, #b85d43 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-gradient-bg {
+  background: linear-gradient(135deg, #d5a542 0%, #be882e 100%);
+}
+
+.bbs-gradient-bg {
+  background: linear-gradient(135deg, #3e2417 0%, #23120b 100%);
+}
+
+.bbs-warm-gradient {
+  background: linear-gradient(180deg, #fdf8f6 0%, #f7ebe4 100%);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(220, 157, 132, 0.2);
+}
+
+.glass-dark {
+  background: rgba(44, 30, 24, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(223, 188, 106, 0.15);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fbf0eb;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #dc9d84;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #c87659;
+}
+
+/* Animation utilities */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.35s ease-out forwards;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 15px rgba(220, 157, 132, 0.3); }
+  50% { box-shadow: 0 0 25px rgba(220, 157, 132, 0.65); }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2.5s infinite;
+}
+
+/* Hide scrollbar for clean horizontal product sliders */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes floatSlow {
+  0% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-18px) scale(1.04); }
+  100% { transform: translateY(0px) scale(1); }
+}
+
+@keyframes shimmerBar {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+@keyframes sunlightPulse {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.38; }
+}

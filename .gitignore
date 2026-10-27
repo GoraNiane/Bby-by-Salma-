@@ -1,0 +1,44 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Dependencies
+node_modules
+*/node_modules
+
+# Build outputs
+dist
+dist-ssr
+*/dist
+.vercel
+
+# Environment variables (JAMAIS sur GitHub)
+.env
+.env.*
+!.env.example
+!*/.env.example
+*.local
+
+# Dossiers d'uploads locaux temporaires
+uploads
+*/uploads
+frontend/public/uploads
+
+# Cache & Scratch
+.eslintcache
+.tempmediaStorage
+
+# Editor & System
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

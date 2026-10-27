@@ -1,0 +1,55 @@
+{
+  "name": "BBS BY SALMA • Cosmétiques d'Exception",
+  "short_name": "BBS By Salma",
+  "description": "Boutique en ligne officielle BBS By Salma. Laits de corps nourrissants, savons naturels d'exception et soins corporels de luxe au Sénégal.",
+  "start_url": "/",
+  "id": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FAF6F1",
+  "theme_color": "#FAF6F1",
+  "categories": ["shopping", "lifestyle", "beauty"],
+  "icons": [
+    {
+      "src": "/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Boutique",
+      "url": "/boutique",
+      "description": "Découvrir tous les produits de beauté BBS By Salma"
+    },
+    {
+      "name": "Nos Catégories",
+      "url": "/categories",
+      "description": "Laits de corps et savons naturels"
+    },
+    {
+      "name": "Mon Panier",
+      "url": "/panier",
+      "description": "Accéder directement au panier d'achat"
+    }
+  ]
+}
