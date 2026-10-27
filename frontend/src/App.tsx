@@ -39,7 +39,7 @@ function MainApp() {
   const { isAuthenticated } = useAuth();
   const [currentPath, setCurrentPath] = useState<string>(() => window.location.pathname || '/');
   const [showSplash, setShowSplash] = useState<boolean>(() => {
-    return !window.location.pathname.startsWith('/admin') && !sessionStorage.getItem('bbs_splash_seen');
+    return !window.location.pathname.startsWith('/admin');
   });
   const [adminTab, setAdminTab] = useState<string>('dashboard');
   const [adminExtraProps, setAdminExtraProps] = useState<any>({});

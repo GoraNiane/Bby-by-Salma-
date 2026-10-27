@@ -7,12 +7,12 @@ import { Sparkles } from 'lucide-react';
 
 interface PremiumSplashScreenProps {
   onComplete: () => void;
-  minDuration?: number; // in milliseconds (default: 3200ms)
+  minDuration?: number; // in milliseconds (default: 2400ms)
 }
 
 export const PremiumSplashScreen: React.FC<PremiumSplashScreenProps> = ({
   onComplete,
-  minDuration = 3200
+  minDuration = 2400
 }) => {
   const [progress, setProgress] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -27,8 +27,8 @@ export const PremiumSplashScreen: React.FC<PremiumSplashScreenProps> = ({
       const elapsed = currentTime - startTime;
       const linearRatio = Math.min(1, elapsed / minDuration);
 
-      // Custom luxury cubic bezier easing: cubic-bezier(0.25, 0.1, 0.25, 1)
-      const easeProgress = Math.pow(linearRatio, 0.85);
+      // Luxury cubic bezier easing for realistic progress bar fill
+      const easeProgress = Math.pow(linearRatio, 0.9);
       const calculatedProgress = Math.min(100, easeProgress * 100);
 
       setProgress(calculatedProgress);
@@ -39,13 +39,13 @@ export const PremiumSplashScreen: React.FC<PremiumSplashScreenProps> = ({
         setProgress(100);
         setIsCompleted(true);
 
-        // Hold at 100% briefly before cinematic light bloom dissipation
+        // Hold briefly at 100% before smooth fade-out into the store
         setTimeout(() => {
           setIsExiting(true);
           setTimeout(() => {
             onComplete();
-          }, 1000); // 1s transition
-        }, 350);
+          }, 700); // 700ms smooth transition to store
+        }, 250);
       }
     };
 
@@ -58,7 +58,7 @@ export const PremiumSplashScreen: React.FC<PremiumSplashScreenProps> = ({
     setIsExiting(true);
     setTimeout(() => {
       onComplete();
-    }, 400);
+    }, 300);
   };
 
   return (
@@ -69,31 +69,30 @@ export const PremiumSplashScreen: React.FC<PremiumSplashScreenProps> = ({
           initial={{ opacity: 1 }}
           exit={{
             opacity: 0,
-            scale: 1.04,
-            filter: 'blur(16px)',
-            transition: { duration: 0.95, ease: [0.4, 0, 0.2, 1] }
+            scale: 1.02,
+            transition: { duration: 0.7, ease: [0.4, 0, 0.2, 1] }
           }}
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#150804] text-white overflow-hidden"
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black text-white overflow-hidden select-none"
           role="dialog"
           aria-label="Écran de démarrage BBS by Salma"
         >
-          {/* 1. Multi-Layer Background (Video, Volumetric Sun Rays, Silk Veil, Gradient) */}
+          {/* 1. Pure Black Background with Subtle Gold Ambient Light */}
           <SplashBackground />
 
           {/* 2. Skip Button (Discreet Luxury Glass Top-Right) */}
           <motion.button
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.8 }}
+            animate={{ opacity: 0.7 }}
             whileHover={{ opacity: 1, scale: 1.03 }}
             onClick={handleSkip}
-            className="absolute top-6 right-6 z-30 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-gold-300/30 text-[11px] font-sans font-medium text-gold-200 tracking-wider uppercase flex items-center gap-1.5 transition-all cursor-pointer shadow-lg active:scale-95"
+            className="absolute top-6 right-6 z-30 px-3.5 py-1.5 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-md border border-[#E2C078]/25 text-[10px] font-sans font-medium text-[#E2C078] tracking-widest uppercase flex items-center gap-1.5 transition-all cursor-pointer shadow-lg active:scale-95"
           >
-            <Sparkles className="w-3 h-3 text-gold-400" />
+            <Sparkles className="w-3 h-3 text-[#E2C078]" />
             <span>Passer</span>
           </motion.button>
 
-          {/* 3. Center Luxury Content (Emblem, BBS by Salma Logo, Taglines) */}
-          <div className="relative z-20 flex flex-col items-center justify-center max-w-lg w-full">
+          {/* 3. Center Luxury Content (Emblem, BBS by Salma Logo, Loading Progress Bar) */}
+          <div className="relative z-20 flex flex-col items-center justify-center max-w-md w-full px-6">
             <SplashLogo progress={progress} />
             <SplashLoader progress={progress} />
           </div>
@@ -102,15 +101,15 @@ export const PremiumSplashScreen: React.FC<PremiumSplashScreenProps> = ({
           {isCompleted && (
             <motion.div
               initial={{ opacity: 0 }}
-              animate={{ opacity: [0, 0.7, 0] }}
-              transition={{ duration: 0.9, ease: 'easeInOut' }}
-              className="absolute inset-0 z-40 bg-gradient-to-r from-amber-100/40 via-white/60 to-amber-100/40 pointer-events-none mix-blend-screen"
+              animate={{ opacity: [0, 0.4, 0] }}
+              transition={{ duration: 0.6, ease: 'easeInOut' }}
+              className="absolute inset-0 z-40 bg-gradient-to-r from-[#E2C078]/20 via-white/40 to-[#E2C078]/20 pointer-events-none mix-blend-screen"
             />
           )}
 
           {/* 5. Bottom Copyright Notice */}
-          <div className="absolute bottom-6 z-20 text-[10px] tracking-[0.25em] text-bbs-300/60 uppercase font-sans">
-            © BBS BY SALMA • TOUS DROITS RÉSERVÉS
+          <div className="absolute bottom-6 z-20 text-[10px] tracking-[0.25em] text-[#A59485]/60 uppercase font-sans">
+            © BBS BY SALMA • MAISON DE COSMÉTIQUES
           </div>
         </motion.div>
       ) : null}

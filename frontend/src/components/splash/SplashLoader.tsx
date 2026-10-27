@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 
 interface SplashLoaderProps {
@@ -6,87 +6,50 @@ interface SplashLoaderProps {
 }
 
 export const SplashLoader: React.FC<SplashLoaderProps> = ({ progress }) => {
-  const [dots, setDots] = useState('');
-
-  // Animated progressive dots (. -> .. -> ...)
-  useEffect(() => {
-    const dotInterval = setInterval(() => {
-      setDots((prev) => (prev.length >= 3 ? '' : prev + '.'));
-    }, 450);
-    return () => clearInterval(dotInterval);
-  }, []);
-
-  const chargementLetters = 'Chargement'.split('');
+  const roundedProgress = Math.min(100, Math.round(progress));
 
   return (
-    <div className="relative flex flex-col items-center justify-center text-center select-none z-20 mt-8 space-y-4 px-4">
-      {/* 1. Slogan Poétique & Sensuel */}
+    <div className="relative flex flex-col items-center justify-center text-center select-none z-20 mt-8 space-y-4 px-4 w-full max-w-sm">
+      {/* 1. Slogan Poétique */}
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
+        initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 1.0 }}
-        className="font-serif italic text-sm sm:text-base text-gold-200/90 tracking-wide font-normal"
+        transition={{ duration: 0.8, delay: 0.6 }}
+        className="font-serif italic text-xs sm:text-sm text-[#E2C078]/90 tracking-wide font-normal"
       >
-        « Votre beauté commence ici »
+        « Votre rituel beauté commence ici »
       </motion.div>
 
-      {/* 2. Indicateur de statut textuel */}
+      {/* 2. Barre de chargement Loading */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.2 }}
-        className="flex items-center gap-1 text-xs sm:text-sm font-sans font-medium text-bbs-200/80 tracking-widest uppercase"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, delay: 0.7 }}
+        className="w-full space-y-2.5"
       >
-        <span>Préparation de votre expérience beauté</span>
-      </motion.div>
-
-      {/* 3. Chargement typographique avec illumination par lettre + points animés */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.3 }}
-        className="flex items-center justify-center space-x-1 py-1"
-      >
-        <div className="flex space-x-[2px] sm:space-x-1 text-xs tracking-[0.25em] font-sans uppercase text-bbs-300/75">
-          {chargementLetters.map((char, index) => (
-            <motion.span
-              key={index}
-              animate={{
-                opacity: [0.35, 1, 0.35],
-                color: ['#dc9d84', '#f5edd2', '#dc9d84']
-              }}
-              transition={{
-                duration: 1.6,
-                repeat: Infinity,
-                delay: index * 0.12,
-                ease: 'easeInOut'
-              }}
-              className="inline-block font-semibold"
-            >
-              {char}
-            </motion.span>
-          ))}
+        {/* Conteneur de la barre de progression */}
+        <div className="relative w-full h-2 sm:h-2.5 bg-white/10 rounded-full p-[2px] border border-[#E2C078]/35 shadow-inner backdrop-blur-md overflow-hidden">
+          {/* Remplissage animé de la barre */}
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-[#C59B27] via-[#F3E5AB] to-[#E2C078] transition-all duration-150 ease-out relative shadow-[0_0_14px_rgba(226,192,120,0.85)]"
+            style={{ width: `${roundedProgress}%` }}
+          >
+            {/* Tête lumineuse étincelante */}
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white shadow-[0_0_8px_#ffffff]" />
+          </div>
         </div>
 
-        {/* Dynamic Trailing Dots */}
-        <span className="w-5 text-left text-xs font-bold text-gold-300 font-sans tracking-widest inline-block">
-          {dots}
-        </span>
-      </motion.div>
+        {/* 3. Texte "Loading..." et Pourcentage alignés */}
+        <div className="flex items-center justify-between text-xs px-1 font-sans">
+          <span className="text-[11px] uppercase tracking-[0.2em] text-[#D1C3B7] font-medium flex items-center gap-1.5">
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#E2C078] animate-pulse" />
+            <span>Chargement...</span>
+          </span>
 
-      {/* 4. Compteur numérique luxueux (sans barre classique) */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, delay: 0.5 }}
-        className="pt-1 flex items-baseline justify-center gap-0.5"
-      >
-        <span className="font-serif text-2xl sm:text-3xl font-bold bg-gradient-to-r from-gold-200 via-gold-300 to-amber-400 bg-clip-text text-transparent drop-shadow-[0_2px_8px_rgba(213,165,66,0.4)]">
-          {Math.round(progress)}
-        </span>
-        <span className="font-sans text-xs font-bold text-gold-400/80 tracking-wider">
-          %
-        </span>
+          <span className="font-serif font-bold text-sm text-[#E2C078] drop-shadow-[0_1px_6px_rgba(226,192,120,0.5)]">
+            {roundedProgress}%
+          </span>
+        </div>
       </motion.div>
     </div>
   );
