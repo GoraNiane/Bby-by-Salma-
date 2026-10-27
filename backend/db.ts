@@ -226,14 +226,17 @@ class Database {
   private data: DatabaseSchema | null = null;
 
   private getDefaultData(): DatabaseSchema {
-    const defaultPasswordHash = bcrypt.hashSync('admin123', 10);
+    const adminEmail = (process.env.ADMIN_EMAIL || 'admin@bbsbysalma.com').trim().toLowerCase();
+    const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+    const adminName = process.env.ADMIN_NAME || 'Salma - Administratrice BBS';
+    const defaultPasswordHash = bcrypt.hashSync(adminPassword, 10);
 
     return {
       adminUsers: [
         {
           id: 'admin_1',
-          name: 'Salma - Administratrice BBS',
-          email: 'admin@bbsbysalma.com',
+          name: adminName,
+          email: adminEmail,
           passwordHash: defaultPasswordHash,
           role: 'superadmin',
           avatar: '/assets/teint_marron.jpg'

@@ -14,6 +14,51 @@ authRouter.post('/login', (req, res) => {
     }
 
     const normalizedEmail = email.trim().toLowerCase();
+    const envEmail = (process.env.ADMIN_EMAIL || 'admin@bbsbysalma.com').trim().toLowerCase();
+    const envPassword = process.env.ADMIN_PASSWORD || 'admin123';
+    const envName = process.env.ADMIN_NAME || 'Salma - Administratrice BBS';
+
+    // 1. Direct match with environment variables (Vercel env vars support)
+    if (normalizedEmail === envEmail && password === envPassword) {
+      let user = db.getData().adminUsers.find(u => u.email.toLowerCase() === normalizedEmail);
+      if (!user) {
+        user = {
+          id: 'admin_1',
+          name: envName,
+          email: envEmail,
+          passwordHash: bcrypt.hashSync(envPassword, 10),
+          role: 'superadmin',
+          avatar: '/assets/teint_marron.jpg'
+        };
+        db.getData().adminUsers.unshift(user);
+        db.save();
+      } else {
+        user.passwordHash = bcrypt.hashSync(envPassword, 10);
+        user.name = envName;
+        db.save();
+      }
+
+      const token = generateToken({
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        name: user.name
+      });
+
+      return res.json({
+        success: true,
+        token,
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          avatar: user.avatar
+        }
+      });
+    }
+
+    // 2. Fallback to existing hashed password in database
     const user = db.getData().adminUsers.find(u => u.email.toLowerCase() === normalizedEmail);
 
     if (!user) {
