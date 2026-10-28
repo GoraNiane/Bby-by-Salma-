@@ -72,10 +72,24 @@ apiRouter.use('/upload', uploadRouter);
 apiRouter.get('/health', (_req, res) => {
   res.json({ status: 'ok', store: 'BBS By Salma API', timestamp: new Date().toISOString() });
 });
+apiRouter.get('/', (_req, res) => {
+  res.json({ status: 'ok', store: 'BBS By Salma API', timestamp: new Date().toISOString() });
+});
 
 // Mount on both /api and /
 app.use('/api', apiRouter);
 app.use('/', apiRouter);
+
+// 404 handler so requests never hang
+app.use((req, res) => {
+  res.status(404).json({ error: `Route introuvable: ${req.method} ${req.url}` });
+});
+
+// Global error handler
+app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  console.error('[BBS Uncaught Error]:', err);
+  res.status(500).json({ error: err?.message || 'Erreur interne du serveur' });
+});
 
 if (!process.env.VERCEL) {
   app.listen(PORT, () => {

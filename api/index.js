@@ -49115,8 +49115,18 @@ apiRouter.use("/upload", uploadRouter);
 apiRouter.get("/health", (_req, res) => {
   res.json({ status: "ok", store: "BBS By Salma API", timestamp: (/* @__PURE__ */ new Date()).toISOString() });
 });
+apiRouter.get("/", (_req, res) => {
+  res.json({ status: "ok", store: "BBS By Salma API", timestamp: (/* @__PURE__ */ new Date()).toISOString() });
+});
 app.use("/api", apiRouter);
 app.use("/", apiRouter);
+app.use((req, res) => {
+  res.status(404).json({ error: `Route introuvable: ${req.method} ${req.url}` });
+});
+app.use((err, _req, res, _next) => {
+  console.error("[BBS Uncaught Error]:", err);
+  res.status(500).json({ error: err?.message || "Erreur interne du serveur" });
+});
 if (!process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`[BBS Server] API Server running on port ${PORT}`);

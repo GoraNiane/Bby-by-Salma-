@@ -9,12 +9,18 @@ const commonConfig = {
 };
 
 async function build() {
-  console.log('[build-api] Bundling Serverless Function for Vercel...');
-  await esbuild.build({
-    ...commonConfig,
-    outfile: 'api/index.js',
-  });
-  console.log('[build-api] Successfully bundled api/index.js');
+  console.log('[build-api] Bundling Serverless Functions for Vercel...');
+  await Promise.all([
+    esbuild.build({
+      ...commonConfig,
+      outfile: 'api/index.js',
+    }),
+    esbuild.build({
+      ...commonConfig,
+      outfile: 'api/[...all].js',
+    }),
+  ]);
+  console.log('[build-api] Successfully bundled api/index.js and api/[...all].js');
 }
 
 build().catch((err) => {
