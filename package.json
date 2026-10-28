@@ -14,7 +14,7 @@
     "build": "npm run build:frontend && npm run build:backend && npm run build:api",
     "build:frontend": "npm run build --prefix frontend",
     "build:backend": "npm run build --prefix backend",
-    "build:api": "esbuild backend/index.ts --bundle --platform=node --format=esm --target=node20 --outfile=api/index.js",
+    "build:api": "esbuild backend/index.ts --bundle --platform=node --format=esm --packages=external --target=node20 --outfile=api/index.js",
     "start": "npm run start --prefix backend",
     "install:all": "npm install && npm --prefix frontend install && npm --prefix backend install"
   },
