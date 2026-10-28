@@ -1,11 +1,14 @@
 import esbuild from 'esbuild';
 
 const commonConfig = {
-  entryPoints: ['backend/vercel.ts'],
+  entryPoints: ['backend/index.ts'],
   bundle: true,
   platform: 'node',
   format: 'esm',
   target: 'node20',
+  banner: {
+    js: `import { createRequire as __createRequire } from 'module'; const require = __createRequire(import.meta.url);`,
+  },
 };
 
 async function build() {
