@@ -49099,6 +49099,13 @@ if (fs3.existsSync(frontendUploadsDir)) {
   app.use("/uploads", import_express12.default.static(frontendUploadsDir));
 }
 db.init();
+app.use((req, _res, next) => {
+  const forwardedPath = req.headers["x-matched-path"] || req.headers["x-forwarded-uri"] || req.headers["x-original-url"];
+  if (forwardedPath && (req.url === "/api/index" || req.url === "/api")) {
+    req.url = forwardedPath;
+  }
+  next();
+});
 var apiRouter = import_express12.default.Router();
 apiRouter.use("/auth", authRouter);
 apiRouter.use("/products", productsRouter);

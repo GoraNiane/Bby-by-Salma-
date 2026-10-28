@@ -55,6 +55,17 @@ if (fs.existsSync(frontendUploadsDir)) {
 // Initialize DB with seed data if needed
 db.init();
 
+// Normalize URL if rewritten by Vercel to /api/index
+app.use((req, _res, next) => {
+  const forwardedPath = (req.headers['x-matched-path'] as string) || 
+                        (req.headers['x-forwarded-uri'] as string) || 
+                        (req.headers['x-original-url'] as string);
+  if (forwardedPath && (req.url === '/api/index' || req.url === '/api')) {
+    req.url = forwardedPath;
+  }
+  next();
+});
+
 // API Router (mount on both /api and / for seamless Vercel serverless routing)
 const apiRouter = express.Router();
 apiRouter.use('/auth', authRouter);
