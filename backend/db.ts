@@ -217,7 +217,24 @@ export interface DatabaseSchema {
   adminUsers: AdminUser[];
 }
 
-const DEFAULT_SEED_FILE = path.join(__dirname, 'data', 'store.json');
+function getSeedFilePath(): string {
+  const possiblePaths = [
+    path.join(__dirname, 'data', 'store.json'),
+    path.join(__dirname, '../data', 'store.json'),
+    path.join(__dirname, '../../data', 'store.json'),
+    path.join(process.cwd(), 'backend', 'data', 'store.json'),
+    path.join(process.cwd(), 'data', 'store.json'),
+    path.join(process.cwd(), 'backend', 'dist', 'data', 'store.json')
+  ];
+  for (const p of possiblePaths) {
+    try {
+      if (fs.existsSync(p)) return p;
+    } catch {}
+  }
+  return path.join(__dirname, 'data', 'store.json');
+}
+
+const DEFAULT_SEED_FILE = getSeedFilePath();
 const DB_FILE = process.env.VERCEL
   ? path.join('/tmp', 'store.json')
   : DEFAULT_SEED_FILE;
@@ -231,17 +248,41 @@ class Database {
     const adminName = process.env.ADMIN_NAME || 'Salma - Administratrice BBS';
     const defaultPasswordHash = bcrypt.hashSync(adminPassword, 10);
 
+    const adminUsers: AdminUser[] = [
+      {
+        id: 'admin_1',
+        name: adminName,
+        email: adminEmail,
+        passwordHash: defaultPasswordHash,
+        role: 'superadmin',
+        avatar: '/assets/teint_marron.jpg'
+      }
+    ];
+
+    if (adminEmail !== 'admin@najarosestore.sn') {
+      adminUsers.push({
+        id: 'admin_2',
+        name: 'Administratrice BBS',
+        email: 'admin@najarosestore.sn',
+        passwordHash: defaultPasswordHash,
+        role: 'superadmin',
+        avatar: '/assets/teint_marron.jpg'
+      });
+    }
+
+    if (adminEmail !== 'admin@bbsbysalma.com') {
+      adminUsers.push({
+        id: 'admin_3',
+        name: 'Salma - Administratrice BBS',
+        email: 'admin@bbsbysalma.com',
+        passwordHash: defaultPasswordHash,
+        role: 'superadmin',
+        avatar: '/assets/teint_marron.jpg'
+      });
+    }
+
     return {
-      adminUsers: [
-        {
-          id: 'admin_1',
-          name: adminName,
-          email: adminEmail,
-          passwordHash: defaultPasswordHash,
-          role: 'superadmin',
-          avatar: '/assets/teint_marron.jpg'
-        }
-      ],
+      adminUsers,
       categories: [
         {
           id: 'cat_laits',
@@ -797,37 +838,46 @@ class Database {
   }
 
   public init(): void {
-    const dataDir = path.dirname(DB_FILE);
     try {
-      if (!fs.existsSync(dataDir)) {
-        fs.mkdirSync(dataDir, { recursive: true });
-      }
-    } catch {}
-
-    if (!fs.existsSync(DB_FILE)) {
-      if (process.env.VERCEL && fs.existsSync(DEFAULT_SEED_FILE)) {
-        try {
-          const raw = fs.readFileSync(DEFAULT_SEED_FILE, 'utf-8');
-          this.data = JSON.parse(raw);
-          this.save();
-          console.log('[BBS DB] Initialized /tmp/store.json from bundled store.json');
-          return;
-        } catch (e) {
-          console.warn('[BBS DB] Failed to seed from file, using fallback default data');
-        }
-      }
-      this.data = this.getDefaultData();
-      this.save();
-      console.log('[BBS DB] Initialized database with complete luxury seed data.');
-    } else {
+      const dataDir = path.dirname(DB_FILE);
       try {
-        const raw = fs.readFileSync(DB_FILE, 'utf-8');
-        this.data = JSON.parse(raw);
-        console.log('[BBS DB] Loaded existing database.');
+        if (!fs.existsSync(dataDir)) {
+          fs.mkdirSync(dataDir, { recursive: true });
+        }
       } catch (err) {
-        console.error('[BBS DB] Failed to parse store.json, re-initializing seed data.', err);
+        console.warn('[BBS DB] Warning: could not create data dir:', err);
+      }
+
+      if (!fs.existsSync(DB_FILE)) {
+        if (fs.existsSync(DEFAULT_SEED_FILE)) {
+          try {
+            const raw = fs.readFileSync(DEFAULT_SEED_FILE, 'utf-8');
+            this.data = JSON.parse(raw);
+            this.save();
+            console.log('[BBS DB] Initialized database from seed file:', DEFAULT_SEED_FILE);
+            return;
+          } catch (e) {
+            console.warn('[BBS DB] Failed to seed from file, using fallback default data');
+          }
+        }
         this.data = this.getDefaultData();
         this.save();
+        console.log('[BBS DB] Initialized database with complete luxury seed data.');
+      } else {
+        try {
+          const raw = fs.readFileSync(DB_FILE, 'utf-8');
+          this.data = JSON.parse(raw);
+          console.log('[BBS DB] Loaded existing database.');
+        } catch (err) {
+          console.error('[BBS DB] Failed to parse store.json, re-initializing seed data.', err);
+          this.data = this.getDefaultData();
+          this.save();
+        }
+      }
+    } catch (outerErr) {
+      console.error('[BBS DB] Critical error in init, falling back to in-memory data:', outerErr);
+      if (!this.data) {
+        this.data = this.getDefaultData();
       }
     }
   }

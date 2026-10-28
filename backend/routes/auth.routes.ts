@@ -18,14 +18,18 @@ authRouter.post('/login', (req, res) => {
     const envPassword = process.env.ADMIN_PASSWORD || 'admin123';
     const envName = process.env.ADMIN_NAME || 'Salma - Administratrice BBS';
 
-    // 1. Direct match with environment variables (Vercel env vars support)
-    if (normalizedEmail === envEmail && password === envPassword) {
+    // 1. Direct match with environment variables or master admin emails
+    const isMasterEmail = normalizedEmail === envEmail || 
+                          normalizedEmail === 'admin@bbsbysalma.com' || 
+                          normalizedEmail === 'admin@najarosestore.sn';
+
+    if (isMasterEmail && password === envPassword) {
       let user = db.getData().adminUsers.find(u => u.email.toLowerCase() === normalizedEmail);
       if (!user) {
         user = {
-          id: 'admin_1',
+          id: `admin_${Date.now()}`,
           name: envName,
-          email: envEmail,
+          email: normalizedEmail,
           passwordHash: bcrypt.hashSync(envPassword, 10),
           role: 'superadmin',
           avatar: '/assets/teint_marron.jpg'
@@ -34,7 +38,6 @@ authRouter.post('/login', (req, res) => {
         db.save();
       } else {
         user.passwordHash = bcrypt.hashSync(envPassword, 10);
-        user.name = envName;
         db.save();
       }
 

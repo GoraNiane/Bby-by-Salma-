@@ -7,6 +7,14 @@
       "passwordHash": "$2b$10$.VIuMe65EXWv6XJTDsEu5.0yrvlrxWVAh1kqTtM/yMH2AXuYY95GK",
       "role": "superadmin",
       "avatar": "/assets/teint_marron.jpg"
+    },
+    {
+      "id": "admin_2",
+      "name": "Administratrice BBS",
+      "email": "admin@najarosestore.sn",
+      "passwordHash": "$2b$10$.VIuMe65EXWv6XJTDsEu5.0yrvlrxWVAh1kqTtM/yMH2AXuYY95GK",
+      "role": "superadmin",
+      "avatar": "/assets/teint_marron.jpg"
     }
   ],
   "categories": [

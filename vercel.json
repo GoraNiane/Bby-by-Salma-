@@ -8,14 +8,15 @@
     "backend": {
       "root": "backend",
       "framework": "express",
-      "entrypoint": "index.ts"
+      "entrypoint": "dist/index.js"
     }
   },
   "rewrites": [
     {
       "source": "/api/(.*)",
       "destination": {
-        "service": "backend"
+        "service": "backend",
+        "path": "/api/$1"
       }
     },
     {
