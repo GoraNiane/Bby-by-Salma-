@@ -11,9 +11,10 @@
     "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"magenta,cyan\" \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
     "dev:backend": "npm run dev --prefix backend",
     "dev:frontend": "npm run dev --prefix frontend",
-    "build": "npm run build --prefix frontend && npm run build --prefix backend",
+    "build": "npm run build:frontend && npm run build:backend && npm run build:api",
     "build:frontend": "npm run build --prefix frontend",
     "build:backend": "npm run build --prefix backend",
+    "build:api": "esbuild backend/index.ts --bundle --platform=node --format=esm --target=node20 --outfile=api/index.js",
     "start": "npm run start --prefix backend",
     "install:all": "npm install && npm --prefix frontend install && npm --prefix backend install"
   },
@@ -34,6 +35,7 @@
     "@types/multer": "^2.0.0",
     "@types/node": "^24.13.3",
     "concurrently": "^9.2.1",
+    "esbuild": "^0.28.2",
     "sharp": "^0.35.5",
     "typescript": "~6.0.2"
   }
