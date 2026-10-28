@@ -1,7 +1,7 @@
 import esbuild from 'esbuild';
 
 const commonConfig = {
-  entryPoints: ['backend/index.ts'],
+  entryPoints: ['backend/vercel.ts'],
   bundle: true,
   platform: 'node',
   format: 'esm',
